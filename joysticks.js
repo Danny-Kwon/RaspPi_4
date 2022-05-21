@@ -15,6 +15,7 @@ const joyStick = {
                 console.log("-----------------------------");
                 if (err) { console.log('채널0 초기화실패!(HW점검!)'); process.exit( ); }
             });
+            
         joyStick.joyY = mcpadc.openMcp3208(VRY,
             { speedHz: SPI_SPEED },
             (err) => {

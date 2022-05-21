@@ -28,7 +28,35 @@
                 var text = document.getElementById('text').value;
                 socket.emit('stopmsg', text);
             };
+            
         };
+        </script>
+        <script>
+            window.onload = function () {
+            var socket = io.connect();
+            var widthcount1 = 1;
+            
+            socket.on('watch1', function(value){
+            Plotly.extendTraces('chart1', {y: [ [value] ] }, [0, 1]);
+            widthcount1++;
+            if (widthcount1 > 100){
+                Plotly.relayout('chart1', {
+                    xaxis: {
+                        range: [widthcount1-99, widthcount1]
+                    }
+                });
+                }
+            });
+            
+            document.getElementById('start').onclick = function () {
+                var text = document.getElementById('text').value;
+                socket.emit('startmsg', text);
+            };
+            document.getElementById('stop').onclick = function () {
+                var text = document.getElementById('text').value;
+                socket.emit('stopmsg', text);
+            };
+            };
         </script>
     </head>
     <body>
@@ -38,11 +66,6 @@
             <input type="button" id="start" value="조이스틱센서 측정가동" />
             <input type="button" id="stop" value="조이스틱센서 측정중지" /> 
         <hr>
-        <h2> 아날로그 조도센서 측정</h2>
-        <hr>
-            <input type="button" id="start" value="아날로그 조도센서가동" />
-            <input type="button" id="stop" value="아날로그 조도센서중지" />
-        <hr>
             <div id="chart">
                 <script>
                     var joyx = { y:[0], name:'JoyX', type: 'line',
@@ -51,6 +74,19 @@
                         marker:{color:"rgb(0,0,255)"}, line: {shape:'spline'}};
                     var data = [joyx, joyy];
                     Plotly.plot('chart', data);
+                </script>
+            </div>
+        <h2> 아날로그 조도센서 측정</h2>
+        <hr>
+            <input type="button" id="start1" value="아날로그 조도센서가동" />
+            <input type="button" id="stop1" value="아날로그 조도센서중지" />
+        <hr>
+            <div id="chart1">
+                <script>
+                    var value = { y: [0], name: 'value', type: 'line',
+                        marker:{color:"rgb(0,255,0)", line: {shape: 'spline'}}};
+                    var data1 = [value];
+                    Plotly.plot('chart', data1)
                 </script>
             </div>
     </body>
